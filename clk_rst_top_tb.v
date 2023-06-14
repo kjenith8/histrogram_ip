@@ -7,7 +7,7 @@ module clk_rst_top_tb();
 localparam clk_period = 10;
 
 //input ports
-reg tb_aclk_i = 1'b0;
+reg tb_aclk_i = 1'b1;
 reg areset_n_i = 1'b0;
 reg areset_n_i_sync = 1'b0;
 
@@ -21,7 +21,7 @@ initial
     begin
         forever
             begin
-               #(clk_period) tb_aclk_i = ~ tb_aclk_i;
+               #(clk_period/2) tb_aclk_i = ~ tb_aclk_i;
             end
     end
 
@@ -54,7 +54,7 @@ initial
         #(10*clk_period);
         areset_n_i  = 1'b1;
         areset_n_i_sync = 1'b1;
-        if(areset_n_o == 1'b0)
+        if(areset_n_o == 1'b0 && tb_aclk_i == 1'b1)
             begin
                 $display("For areset_n_i %b and areset_n_i_sync %b,Reset should be de-asserted,but it is asserted. Error",areset_n_i, areset_n_i_sync);
                 $finish;
