@@ -7,34 +7,32 @@ module clk_rst_top (
     input   wire areset_n_i_sync,
     output  wire aclk_o,
     output  wire areset_n_o
-    //output  wire areset_n_o_sync
 ); 
 
-//reg areset_n_q;
-//reg areset_n_qq;
+reg areset_n_q;
+reg areset_n_qq;
 reg areset_n;
-//reg areset_n_sync_qq;
 
 
 //reset_bridge circuit
-//always @ (posedge aclk_i or negedge areset_n_i)
-//    begin
-//        if(areset_n_i == 1'b0)
-//            begin
-//                areset_n_q <= 1'b0;
-//                areset_n_qq <= 1'b0;
-//            end
-//        else
-//            begin
-//                areset_n_q  <= 1'b1;
-//                areset_n_qq <= areset_n_q;
-//            end
-//    end
+always @ (posedge aclk_i or negedge areset_n_i)
+    begin
+        if(areset_n_i == 1'b0)
+            begin
+                areset_n_q <= 1'b0;
+                areset_n_qq <= 1'b0;
+            end
+        else
+            begin
+                areset_n_q  <= 1'b1;
+                areset_n_qq <= areset_n_q;
+            end
+    end
 
 //routing to sync reset
-always @ (posedge aclk_i or negedge areset_n_i)
+always @ (posedge aclk_i or negedge areset_n_qq)
         begin
-            if(areset_n_i == 1'b0)
+            if(areset_n_qq == 1'b0)
                 begin
                     areset_n    <= 1'b0;
                 end
@@ -45,8 +43,7 @@ always @ (posedge aclk_i or negedge areset_n_i)
         end
 
  assign  aclk_o             = aclk_i;
- assign  areset_n_o         = areset_n;
- //assign  areset_n_o_sync    = areset_n_sync_qq;      
+ assign  areset_n_o         = areset_n;     
 
 
 

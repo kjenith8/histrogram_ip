@@ -1,0 +1,1 @@
+create_clock -name aclk -period 1.25 -waveform {0 0.625} [get_ports aclk]
